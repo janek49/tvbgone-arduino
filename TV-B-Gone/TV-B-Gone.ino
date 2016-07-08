@@ -5,6 +5,7 @@
 IRsend irsend;
 
 const PROGMEM uint16_t sony_old[22] = {550, 1450, 550, 450, 600, 1450, 550, 450, 600, 1500, 550, 450, 550, 500, 550, 500, 550, 500, 550, 450, 600};
+const PROGMEM uint16_t grundig1[22] = {550, 2600, 550, 450, 600, 450, 550, 500, 500, 500, 550, 500, 500, 500, 550, 500, 550, 500, 550, 450, 550};
 
 void setup() {
 }
@@ -29,6 +30,7 @@ void loop() {
     irsend.sendPanasonic(0x4004, 0x100BCBD); //PANASONIC TV1
     delay(40);
   }
+  send(grundig1, 22);
   pause();
   irsend.sendJVC(0xC0E8, 16, 0); //JVC, THOMSON
   pause();
@@ -71,7 +73,7 @@ void loop() {
   pause();
   send(sony_old, 22); //SONY
   sendNEC(0x1CE348B7); //SANYO
-  sendNEC(0x1CE338C7); //HITACHI, SANYO
+  sendNEC(0x1CE338C7); //HITACHI, SANYO, GRUNDIG
   sendNEC(0x10EFEB14); //AOC
   sendNEC(0x18E710EF); //NEC TV
   sendNEC(0xAF5FC03); //DENON
@@ -120,7 +122,7 @@ void sendSamsung(unsigned long code) {
   pause();
 }
 
-void sendXSAT(unsigned char adr, unsigned char cmd){
+void sendXSAT(unsigned char adr, unsigned char cmd) {
   irsend.sendXSAT(adr, cmd);
   pause();
 }
