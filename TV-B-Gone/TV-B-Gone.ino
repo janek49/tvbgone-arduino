@@ -4,7 +4,7 @@
 
 IRsend irsend;
 
-const PROGMEM uint16_t grundig[38] = {8300, 4200, 500, 1600, 500, 1600, 500, 600, 500, 1600, 550, 1550, 500, 650, 450, 600, 500, 600, 500, 4200, 500, 1650, 450, 1650, 450, 1650, 500, 1600, 500, 1600, 500, 600, 500, 600, 500, 600, 500};
+const PROGMEM uint16_t sony_old[22] = {550, 1450, 550, 450, 600, 1450, 550, 450, 600, 1500, 550, 450, 550, 500, 550, 500, 550, 500, 550, 450, 600};
 
 void setup() {
 }
@@ -13,8 +13,8 @@ void loop() {
   sendSony(0xA90, 12); //SONY, NEC
   sendNEC(0x20DF10EF); //LG, SAMSUNG, VIZIO, HISENSE, KENWOOD, PROSCAN, ZENITH
   sendRC5(0x80C); //PHILIPS, MAGNAVOX, GRUNDIG, MEDION, SILVERCREST
-  sendRC5(0xC); //PHILIPS, GRUNDIG, MEDION, WATSON, AEG, SILVERCREST, THOMSON
-  sendRC5(0x84C); //TELEFUNKEN, SHARP
+  sendRC5(0xC); //PHILIPS, GRUNDIG, MEDION, WATSON, AEG, SILVERCREST, THOMSON, LG
+  sendRC5(0x84C); //TELEFUNKEN, SHARP, SANYO
   sendRC5(0x4C); //SHARP, TOSHIBA, MEDION
   irsend.sendSharpRaw(0x425D, 15); //SHARP
   pause();
@@ -24,7 +24,7 @@ void loop() {
     sendNEC(0x4CB340BF); //OPTOMA PROJECTOR
     sendNEC(0xC1AA09F6); //EPSON PROJECTOR/TV
     sendNEC(0x189728D7); //NEC PROJECTOR
-  } 
+  }
   for (int i = 0; i < 2; ++i) {
     irsend.sendPanasonic(0x4004, 0x100BCBD); //PANASONIC TV1
     delay(40);
@@ -32,7 +32,7 @@ void loop() {
   pause();
   irsend.sendJVC(0xC0E8, 16, 0); //JVC, THOMSON
   pause();
-  sendNEC(0x2FD48B7); //TOSHIBA. HISENSE, SAMSUNG, APEX
+  sendNEC(0x2FD48B7); //TOSHIBA, HISENSE, SAMSUNG, APEX, AKAI
   sendSamsung(0x6060F00F); //AIKO
   sendNEC(0x86C6807F); //ACER
   sendSamsung(0xE0E040BF); //SAMSUNG TV1
@@ -59,16 +59,18 @@ void loop() {
   sendNEC(0x3E060FC0); //AIWA
   sendRC5(0xC3D); //GRUNDIG FINE ARTS
   sendNEC(0xFB38C7); //GRUNDIG, MEDION
-  send(grundig, 38);
+  sendXSAT(0x14, 0x15); //GRUNDIG, XSAT
   sendRC5(0x301); //SHARP
   sendRC5(0xB01); //SHARP
-  sendSamsung(0x909C837); //SAMSUNG TV3 
+  sendSamsung(0x909C837); //SAMSUNG TV3
   sendRC5(0x9CC); //PHILIPS ITV
   sendNEC(0x20DFBE41); //LG TV3
   sendSamsung(0x909040BF); //SAMSUNG
   sendNEC(0x55AA38C7); //PIONEER, SHARP
   irsend.sendJVC(0xF8EB, 16, 0); //SONY, JVC
   pause();
+  send(sony_old, 22); //SONY
+  sendNEC(0x1CE348B7); //SANYO
   sendNEC(0x1CE338C7); //HITACHI, SANYO
   sendNEC(0x10EFEB14); //AOC
   sendNEC(0x18E710EF); //NEC TV
@@ -78,6 +80,8 @@ void loop() {
   sendNEC(0x8C73817E); //LENOVO
   sendNEC(0x38C7AC0A); //MALATA
   sendNEC(0xDE010FC0); //AIWA
+  sendNEC(0xFD00FF); //TELEFUNKEN
+  sendNEC(0x8E7152AD); //TOSHIBA
 }
 
 void pause() {
@@ -113,6 +117,11 @@ void sendSony(unsigned int code, int bits) {
 
 void sendSamsung(unsigned long code) {
   irsend.sendSAMSUNG(code, 32);
+  pause();
+}
+
+void sendXSAT(unsigned char adr, unsigned char cmd){
+  irsend.sendXSAT(adr, cmd);
   pause();
 }
 
